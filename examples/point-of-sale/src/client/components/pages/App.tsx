@@ -16,6 +16,9 @@ import { SolanaPayLogo } from '../images/SolanaPayLogo';
 import { SOLIcon } from '../images/SOLIcon';
 import css from './App.module.css';
 
+import { MAINNET_ENDPOINT, MAINNET_USDC_MINT } from '../../utils/constants';
+import { USDCIcon } from '../images/USDCIcon';
+
 interface AppProps extends NextAppProps {
     host: string;
     query: {
@@ -48,8 +51,8 @@ const App: FC<AppProps> & { getInitialProps(appContext: AppContext): Promise<App
     );
 
     // Toggle comments on these lines to use transaction requests instead of transfer requests.
-    const link = undefined;
-    // const link = useMemo(() => new URL(`${baseURL}/api/`), [baseURL]);
+    // const link = undefined;
+    const link = useMemo(() => new URL(`${baseURL}/api/`), [baseURL]);
 
     let recipient: PublicKey | undefined = undefined;
     const { recipient: recipientParam, label, message } = query;
@@ -65,7 +68,7 @@ const App: FC<AppProps> & { getInitialProps(appContext: AppContext): Promise<App
         <ThemeProvider>
             <FullscreenProvider>
                 {recipient && label ? (
-                    <ConnectionProvider endpoint={DEVNET_ENDPOINT}>
+                    <ConnectionProvider endpoint={MAINNET_ENDPOINT}>
                         <WalletProvider wallets={wallets} autoConnect={connectWallet}>
                             <WalletModalProvider>
                                 <ConfigProvider
@@ -74,10 +77,11 @@ const App: FC<AppProps> & { getInitialProps(appContext: AppContext): Promise<App
                                     recipient={recipient}
                                     label={label}
                                     message={message}
-                                    symbol="SOL"
-                                    icon={<SOLIcon />}
-                                    decimals={9}
-                                    minDecimals={1}
+                                    splToken={MAINNET_USDC_MINT}
+                                    symbol="USDC"
+                                    icon={<USDCIcon />}
+                                    decimals={6}
+                                    minDecimals={2}
                                     connectWallet={connectWallet}
                                 >
                                     <TransactionsProvider>
